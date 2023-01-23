@@ -20,7 +20,6 @@ const firebaseConfig = {
     appId: import.meta.env.VITE_REACT_APP_FIREBASE_APP_ID,
     measurementId: import.meta.env.VITE_REACT_APP_FIREBASE_MEASURMENT_ID,
     databaseURL: import.meta.env.VITE_REACT_APP_DATABASEURL,
-    storageBucket: import.meta.env.VITE_REACT_APP_FIREBASE_STORAGE_BUCKET
 };
 
 
