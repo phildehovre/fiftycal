@@ -21,7 +21,7 @@ function Login() {
 
     const navigate = useNavigate();
 
-    const onSubmit = (data) => {
+    const onSubmit = (data: { email: string; password: string }) => {
         signInWithEmailAndPassword(data.email, data.password)
         navigate('/')
     };
@@ -34,7 +34,7 @@ function Login() {
     };
 
     return (
-        <Section height='100vh'>
+        <Section height='100vh' display={undefined}>
             <div className='login_form-ctn'>
                 <h1>Log in</h1>
                 <button className='login-btn' onClick={e => { handleSignupWithGoogle() }}>
