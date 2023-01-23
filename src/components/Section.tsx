@@ -1,9 +1,9 @@
 import React from 'react'
 import './Section.scss'
 
-function Section(props: any) {
+function Section(props: { children: any; height: any; display: any; }) {
 
-    // const { children, height, display } = props;
+    const { children, height, display } = props;
 
     const styles = {
         height, display
