@@ -1,46 +1,34 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './Login.scss'
 import Section from './Section'
-
-import { Link, useNavigate } from 'react-router-dom'
-import { auth, provider } from '../config/firebase'
-import { signInWithPopup } from 'firebase/auth'
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 
 
 function Login() {
 
-    const [
-        signInWithEmailAndPassword,
-        user,
-        loading,
-        error,
-    ] = useSignInWithEmailAndPassword(auth);
+    function handleCallbackResponse(res: any) {
+        console.log("Encoded JWT ID Token " + res.credential)
+    }
 
-    const navigate = useNavigate();
+    useEffect(() => {
+        /*global google*/
+        // @ts-ignore
+        google.accounts.id.initialize({
+            // client_id: '612460763976-4g28j4lkc0921pjb45ps20ju0fan4gaq.apps.googleusercontent.com',
+            client_id: import.meta.env.VITE_REACT_APP_GSI_CLIENT_ID,
+            callback: handleCallbackResponse
+        });
 
-    const onSubmit = (data: { email: string; password: string }) => {
-        signInWithEmailAndPassword(data.email, data.password)
-        navigate('/')
-    };
+        // @ts-ignore
+        google.accounts.id.renderButton(
+            document.getElementById("signInBtn"), { theme: "outline", size: "large" }
+        );
+    }, [])
 
-    const handleSignupWithGoogle = async () => {
-        signInWithPopup(auth, provider).then(() => {
-            console.log(' Signed In')
-            navigate('/calendar')
-        })
-    };
 
     return (
         <Section height='100vh' display={undefined}>
-            <div className='login_form-ctn'>
-                <h1>Log in</h1>
-                <button className='login-btn' onClick={e => { handleSignupWithGoogle() }}>
-                    Log in with
-                    <FontAwesomeIcon icon={faGoogle} size='xl' />
-                </button>
+            <div>
+                <div id="signInBtn"></div>
             </div>
         </Section >
     )
