@@ -6,8 +6,8 @@ import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 function CreateEvent() {
     const [start, setStart] = useState(new Date())
     const [end, setEnd] = useState(new Date())
-    const [eventName, setEventName] = useState('Hello')
-    const [eventDescription, setEventDescription] = useState()
+    const [eventName, setEventName] = useState('')
+    const [eventDescription, setEventDescription] = useState('')
 
     const session = useSession()
 
@@ -30,6 +30,7 @@ function CreateEvent() {
             await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', {
                 method: 'POST',
                 headers: {
+                    // @ts-ignore
                     'Authorization': 'Bearer ' + session.provider_token
                 },
                 body: JSON.stringify(event)
