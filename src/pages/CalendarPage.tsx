@@ -1,28 +1,25 @@
 import React, { useEffect } from 'react'
-import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth'
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom'
-import '../components/Login.scss'
+import { UserContext } from '../contexts/UserContext';
+import Calendar from '../components/Calendar'
 import axios from 'axios'
 
 
 function CalendarPage() {
 
+    const context = useContext(UserContext)
 
 
-    const auth = getAuth()
-    const navigate = useNavigate()
 
-    console.log(auth?.currentUser)
-
-    const handleSignOut = async () => {
-        signOut(auth).then(() => {
-            navigate('/')
-        })
-    };
 
     return (
-        <div>You have been Redirected to your calendar!
-            <div className='login-btn' onClick={() => handleSignOut()}>Log out</div>
+        <div>
+            {/* <Logout /> */}
+            {/* <Calendar /> */}
+
+
+
         </div>
     )
 }

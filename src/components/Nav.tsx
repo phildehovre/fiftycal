@@ -1,27 +1,29 @@
 import React, { useEffect, useState } from 'react'
+import SupabaseLogin from '../components/SupabaseLogin';
+import SupabaseSignOut from '../components/SupabaseSignOut'
 import { useSession, useSessionContext } from '@supabase/auth-helpers-react'
-import CreateEvent from '../components/CreateEvent';
-import Hero from '../components/Hero';
 
 
 
-function Homepage() {
+function Nav() {
 
     const session = useSession(); //tokens, when session exists, we have a user
-
     const { isLoading } = useSessionContext()
 
 
 
     return (
         <div>
+            {isLoading &&
+                <h1>Loading...</h1>
+            }
             {
                 session
-                    ? <CreateEvent />
-                    : <Hero />
+                    ? <SupabaseSignOut />
+                    : <SupabaseLogin />
             }
         </div>
     )
 }
 
-export default Homepage
+export default Nav
