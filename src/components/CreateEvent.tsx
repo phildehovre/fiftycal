@@ -40,8 +40,7 @@ function CreateEvent() {
                 console.log(data)
             });
         } catch (error) {
-            alert('Unable to create event at this time, see console for details')
-            console.log(error)
+            alert('Unable to create event at this time: ' + error)
         }
     }
 
