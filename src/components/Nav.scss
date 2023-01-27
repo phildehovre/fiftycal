@@ -1,0 +1,18 @@
+.nav-ctn {
+    height: 10vh;
+    border-bottom: 1px solid #151515;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .btn-ctn {
+        display: flex;
+        justify-content: space-evenly;
+        width: 30%;
+        align-items: center;
+    }
+}

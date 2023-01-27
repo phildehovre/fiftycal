@@ -11,7 +11,6 @@ function CreateEvent() {
 
     const session = useSession()
 
-    console.log(session)
 
     async function createEvent() {
         const event = {

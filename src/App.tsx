@@ -5,6 +5,7 @@ import Homepage from '../src/pages/Homepage'
 import CalendarPage from './pages/CalendarPage'
 import UserContextProvider from './contexts/UserContext'
 import Nav from './components/Nav'
+import PostEvents from './components/PostEvents'
 
 function App() {
 
@@ -18,6 +19,8 @@ function App() {
           <Routes>
             <Route element={<Homepage />} path='/' />
             <Route element={<CalendarPage />} path='/calendar' />
+            <Route element={<PostEvents />} path='/post' />
+
           </Routes>
         </UserContextProvider>
       </Router>
