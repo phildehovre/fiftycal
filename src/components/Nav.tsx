@@ -18,7 +18,7 @@ function Nav() {
         <div className='nav-ctn'>
             <div className='btn-ctn'>
                 <Link to='/'>Home</Link>
-                <Link to='/post'>Post</Link>
+                <Link to='/new-template'>Template</Link>
 
                 {
                     session

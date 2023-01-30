@@ -1,0 +1,35 @@
+.band {
+    height: 5em;
+    width: 100%;
+    display: flex;
+    max-width: 80%;
+
+}
+
+.cell {
+    height: 100%;
+    width: 100%;
+    // min-width: 35px;
+    border: 1px solid rgba(73, 73, 73, 0.384);
+    transition: 100ms all ease-in-out;
+    cursor: pointer;
+    position: relative;
+
+    &:hover {
+        border: 1px solid orange
+    }
+}
+
+.dropdown {
+    position: absolute;
+    width: 5em;
+    padding: 1em;
+    background-color: rgba(0, 0, 0, 0.247);
+    top: 100%;
+    left: 0;
+
+    &:hover {
+
+        background-color: hsla(0, 0%, 0%, 0.603);
+    }
+}

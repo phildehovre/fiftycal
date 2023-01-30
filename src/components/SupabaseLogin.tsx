@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 
 function SupabaseLogin() {
 
-    const session = useSession(); //tokens, when session exists, we have a user
+
     const supabase = useSupabaseClient(); // talk to supabase
     const navigate = useNavigate()
 
@@ -16,13 +16,18 @@ function SupabaseLogin() {
             await supabase.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    scopes: 'https://www.googleapis.com/auth/calendar' // scopes must be seperated by a space, under the same string. 
+                    scopes: 'https://www.googleapis.com/auth/calendar', // scopes must be seperated by a space, under the same string. 
+                    redirectTo: window.location.origin
                 }
-            })
+            },
+            );
         }
         catch (error) {
             alert('Error logging in to Google with Supabase')
-            console.log(error)
+        }
+
+        finally {
+            navigate('/new-template')
         }
     }
 
