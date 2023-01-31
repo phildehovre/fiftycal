@@ -10,7 +10,7 @@
     height: 100%;
     width: 100%;
     // min-width: 35px;
-    border: 1px solid rgba(73, 73, 73, 0.384);
+    border: 1px solid hsla(0, 0%, 29%, 0.384);
     transition: 100ms all ease-in-out;
     cursor: pointer;
     position: relative;
@@ -18,18 +18,39 @@
     &:hover {
         border: 1px solid orange
     }
+
+    &.selected {
+        border: 1px solid orange
+    }
 }
 
 .dropdown {
+    min-width: 300px;
     position: absolute;
-    width: 5em;
     padding: 1em;
-    background-color: rgba(0, 0, 0, 0.247);
-    top: 100%;
+    background-color: hsla(0, 0%, 0%, 0.925);
+    top: 130%;
     left: 0;
 
-    &:hover {
-
-        background-color: hsla(0, 0%, 0%, 0.603);
+    &::after {
+        content: '';
+        width: 0em;
+        height: 0em;
+        // background-color: red;
+        position: absolute;
+        top: -16px;
+        left: 7px;
+        border-bottom: 2em solid hsla(0, 0%, 0%, 0.925);
+        border-top: 0em solid transparent;
+        border-right: 0em solid transparent;
+        border-left: 2em solid transparent;
+        transform: rotate(-135deg)
     }
+
+
+    &:hover {
+        background-color: hsla(0, 0%, 0%, 0.925);
+    }
+
+
 }

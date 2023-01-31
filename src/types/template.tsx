@@ -8,3 +8,11 @@ export type TemplateType = {
     start: Date,
     end: Date
 }
+
+export type TemplateProps = {
+    template: {
+        name: string,
+        duration: string,
+        description: string
+    },
+}

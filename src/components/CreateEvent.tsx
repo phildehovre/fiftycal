@@ -1,21 +1,30 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useState } from 'react'
 import DateTimePicker from 'react-datetime-picker'
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
+import { supabase } from '../App'
+import { TemplateContext } from '../contexts/TemplateContext'
+import { useParams } from 'react-router-dom'
 
 function CreateEvent() {
     const [start, setStart] = useState(new Date())
     const [end, setEnd] = useState(new Date())
-    const [eventName, setEventName] = useState('')
-    const [eventDescription, setEventDescription] = useState('')
+    const [name, setName] = useState('')
+    const [description, setDescription] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
+    const [duration, setDuration] = useState(1)
+    const [unit, setUnit] = useState('days')
 
     const session = useSession()
+    const { selectedTemplateId } = useContext(TemplateContext)
+    const params = useParams()
 
 
     async function createEvent() {
         const event = {
-            'summary': eventName,
-            'description': eventDescription,
+            'template_id': selectedTemplateId || params.id,
+            'name': name,
+            'description': description,
             'start': {
                 'dateTime': start.toISOString(),
                 'timezone': Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -26,35 +35,33 @@ function CreateEvent() {
             },
         }
         try {
-            await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', {
-                method: 'POST',
-                headers: {
-                    // @ts-ignore
-                    'Authorization': 'Bearer ' + session.provider_token
-                },
-                body: JSON.stringify(event)
-            }).then((data) => {
-                return data.json();
-            }).then((data) => {
-                console.log(data)
-            });
-        } catch (error) {
-            alert('Unable to create event at this time: ' + error)
+            const { data, error } = await supabase
+                .from('events')
+                .insert(event)
+                .select()
+            setIsLoading(true)
+            console.log(error)
+            return data
+        }
+
+        catch (error) {
+            console.log(error)
+        }
+
+        finally {
+            setIsLoading(false)
         }
     }
 
     return (
-        <div>
-            <h3>Create event: </h3>
-            <div style={{ display: 'flex', flexDirection: 'column', padding: '1em' }}>
-                <DateTimePicker value={start} onChange={setStart} />
-                <DateTimePicker value={end} onChange={setEnd} />
-                <label>Name</label>
-                <input type='text' value={eventName} onChange={(e) => { setEventName(e.target.value) }}></input>
-                <label>Description</label>
-                <input type='text' value={eventDescription} onChange={(e) => { setEventDescription(e.target.value) }}></input>
-                <button onClick={() => { createEvent() }}>Create event</button>
-            </div>
+        <div style={{ display: 'flex', flexDirection: 'column', padding: '1em' }}>
+            <DateTimePicker value={start} onChange={setStart} />
+            <DateTimePicker value={end} onChange={setEnd} />
+            <label>Name</label>
+            <input type='text' value={name} onChange={(e) => { setName(e.target.value) }}></input>
+            <label>Description</label>
+            <input type='text' value={description} onChange={(e) => { setDescription(e.target.value) }}></input>
+            <button onClick={() => { createEvent() }}>{isLoading ? 'Loading...' : 'Save template'}</button>
         </div>
     )
 }

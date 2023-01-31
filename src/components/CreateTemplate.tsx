@@ -30,8 +30,6 @@ function CreateTemplate() {
     const session = useSession(); //tokens, when session exists, we have a user
     const navigate = useNavigate()
 
-    console.log(name, description)
-
     const createTemplate = async () => {
         const template = {
             'name': name,
@@ -53,7 +51,6 @@ function CreateTemplate() {
                 .insert(template)
                 .select()
             setIsLoading(true)
-            // setSelectedTemplateId
             if (res.data !== null) {
                 context.setSelectedTemplateId(res.data[0].id)
             }
