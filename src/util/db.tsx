@@ -1,6 +1,7 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query';
 import { supabase } from '../App';
 import { TemplateType } from '../types/template';
+
 
 const fetchTemplate = async (id: any) => {
     try {
@@ -26,41 +27,47 @@ export function useTemplate(id: string | undefined) {
     )
 };
 
-const createTemplate = async (templateObj: TemplateType) => {
-    const { name, description, start, end, duration, unit } = templateObj
-    const template = {
-        'name': name,
-        'description': description,
-        'start': {
-            'dateTime': start.toISOString(),
-            'timezone': Intl.DateTimeFormat().resolvedOptions().timeZone
-        },
-        'end': {
-            'dateTime': end.toISOString(),
-            'timezone': Intl.DateTimeFormat().resolvedOptions().timeZone
-        },
-        'duration': `${duration} ${unit}`
-    }
 
-    try {
-        const res = await supabase
-            .from('templates')
-            .insert(template)
-            .select()
-        return res
-    }
 
-    catch (error) {
-        console.log(error)
-    };
+async function fetchTemplates() {
+    let res = await supabase
+        .from('templates')
+        .select('*')
+    return res
 };
 
-export function useCreateTemplate(template: TemplateType) {
-    const { name } = template
+export function useTemplates() {
     return useQuery(
-        ['template', { name }], () => createTemplate(template),
-        {
-            enabled: !!template
-        }
+        ['templates'],
+        () => fetchTemplates()
     )
 };
+
+async function fetchEvents(id: any) {
+    let res = await supabase
+        .from('events')
+        .select('*')
+        .eq('template_id', id)
+    return res
+};
+
+export function useEvents(templateId: any) {
+    return useQuery(
+        ['events'],
+        () => fetchEvents(templateId),
+        {
+            enabled: !!templateId,
+            refetchInterval: 1000
+
+        }
+    );
+};
+
+export async function createEvent(event: any) {
+    const res = await supabase
+        .from('events')
+        .insert(event)
+        .select()
+    return res
+}
+

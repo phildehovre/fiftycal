@@ -63,6 +63,7 @@ function CreateTemplate() {
         }
 
         finally {
+            console.log(context.selectedTemplateId)
             setIsLoading(false)
             navigate(`/template/${context.selectedTemplateId}`)
         }

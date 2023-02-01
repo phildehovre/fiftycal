@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
+import { useEvents } from '../util/db';
 
 type TemplateProps = {
     selectedTemplateId: string | undefined,
@@ -19,13 +20,21 @@ export interface Event {
 
 function TemplateContextProvider(props: any) {
 
-
     const [selectedTemplateId, setSelectedTemplateId] = useState<string>()
+
+    const {
+        data: events,
+        isLoading: isEventsLoading,
+        error: eventsError
+    } = useEvents(selectedTemplateId)
 
     const values = {
         selectedTemplateId,
-        setSelectedTemplateId
-    }
+        setSelectedTemplateId,
+        events,
+        isEventsLoading,
+        eventsError
+    };
 
     return (
 

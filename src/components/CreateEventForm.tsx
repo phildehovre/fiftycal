@@ -47,22 +47,7 @@ function CreateEventForm() {
             },
         }
         addEventToTemplate(event)
-        // try {
-        //     await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', {
-        //         method: 'POST',
-        //         headers: {
-        //             // @ts-ignore
-        //             'Authorization': 'Bearer ' + session.provider_token
-        //         },
-        //         body: JSON.stringify(event)
-        //     }).then((data) => {
-        //         return data.json();
-        //     }).then((data) => {
-        //         console.log(data)
-        //     });
-        // } catch (error) {
-        //     alert('Unable to create event at this time: ' + error)
-        // }
+
     }
 
     return (

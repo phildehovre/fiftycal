@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSession, useSessionContext } from '@supabase/auth-helpers-react'
 import CreateEvent from '../components/CreateEvent';
 import Hero from '../components/Hero';
+import TemplatesList from '../components/TemplatesList';
 
 
 
@@ -11,13 +12,11 @@ function Homepage() {
 
     const { isLoading } = useSessionContext()
 
-
-
     return (
         <div>
             {
                 session
-                    ? <CreateEvent />
+                    ? <TemplatesList />
                     : <Hero />
             }
         </div>

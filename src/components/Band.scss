@@ -22,6 +22,11 @@
     &.selected {
         border: 1px solid orange
     }
+
+    &.has-event {
+        background-color: orange;
+        color: black
+    }
 }
 
 .dropdown {

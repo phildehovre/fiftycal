@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useTemplate } from '../util/db';
 import Template from '../components/Template';
 import CampaignVisualiser from '../components/CampaignVisualiser';
+import TemplatesList from '../components/TemplatesList';
 
 function TemplatePage() {
 
@@ -20,6 +21,7 @@ function TemplatePage() {
 
             {!isLoading && data &&
                 <div style={{ width: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <TemplatesList />
                     <CampaignVisualiser template={data.data} />
                     <Template template={data.data} />
                 </div>

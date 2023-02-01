@@ -1,0 +1,12 @@
+.dashboard-ctn {
+    display: grid;
+    grid-template-columns: repeat(1fr, 10%);
+    grid-template-rows: repeat(1fr, 10%);
+}
+
+.template {
+    grid-column-start: 2;
+    display: 'flex';
+    flex-direction: 'column';
+    align-items: 'center';
+}

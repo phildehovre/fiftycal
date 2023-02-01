@@ -5,8 +5,16 @@ import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { supabase } from '../App'
 import { TemplateContext } from '../contexts/TemplateContext'
 import { useParams } from 'react-router-dom'
+import { createEvent } from '../util/db'
+import { useQueryClient, useMutation } from '@tanstack/react-query'
 
-function CreateEvent() {
+function CreateEvent(props: any) {
+
+    const queryClient = useQueryClient()
+
+
+    const { setShow, setUserIsCreatingEvent, setCellIndex, dayMinus } = props
+
     const [start, setStart] = useState(new Date())
     const [end, setEnd] = useState(new Date())
     const [name, setName] = useState('')
@@ -33,6 +41,7 @@ function CreateEvent() {
                 'dateTime': end.toISOString(),
                 'timezone': Intl.DateTimeFormat().resolvedOptions().timeZone
             },
+            'date': dayMinus
         }
         try {
             const { data, error } = await supabase
@@ -50,18 +59,30 @@ function CreateEvent() {
 
         finally {
             setIsLoading(false)
+            setShow(false)
+            setUserIsCreatingEvent(false)
+            setCellIndex(null)
         }
-    }
+    };
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', padding: '1em' }}>
-            <DateTimePicker value={start} onChange={setStart} />
-            <DateTimePicker value={end} onChange={setEnd} />
+            <div>
+                <input type='number' min='1' placeholder='30' onChange={(e: any) => setDuration(e.target.value)}></input>
+                <select onChange={(e: any) => { setUnit(e.target.value) }}>
+                    <option value='days'>days</option>
+                    <option value='weeks'>weeks</option>
+                    <option value='months'>months</option>
+                </select>
+            </div>
             <label>Name</label>
             <input type='text' value={name} onChange={(e) => { setName(e.target.value) }}></input>
             <label>Description</label>
             <input type='text' value={description} onChange={(e) => { setDescription(e.target.value) }}></input>
-            <button onClick={() => { createEvent() }}>{isLoading ? 'Loading...' : 'Save template'}</button>
+            <button onClick={() => {
+                createEvent()
+                // mutateEvents.mutate(event)
+            }}>{isLoading ? 'Loading...' : 'Create event'}</button>
         </div>
     )
 }
