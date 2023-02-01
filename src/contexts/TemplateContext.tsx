@@ -4,11 +4,15 @@ import { useEvents } from '../util/db';
 
 type TemplateProps = {
     selectedTemplateId: string | undefined,
-    setSelectedTemplateId: (id: string) => void
+    setSelectedTemplateId: (id: string) => void,
+    events: Object | undefined,
+    isEventsLoading: Boolean
 }
 export const TemplateContext = React.createContext<TemplateProps>({
     selectedTemplateId: '',
-    setSelectedTemplateId: () => { }
+    setSelectedTemplateId: () => { },
+    events: Object,
+    isEventsLoading: false
 });
 
 export interface Event {

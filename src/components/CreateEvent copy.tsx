@@ -28,39 +28,42 @@ function CreateEvent(props: any) {
     const params = useParams()
 
 
-    const event = {
-        'template_id': selectedTemplateId || params.id,
-        'name': name,
-        'description': description,
-        'start': {
-            'dateTime': start.toISOString(),
-            'timezone': Intl.DateTimeFormat().resolvedOptions().timeZone
-        },
-        'end': {
-            'dateTime': end.toISOString(),
-            'timezone': Intl.DateTimeFormat().resolvedOptions().timeZone
-        },
-        'date': dayMinus
-    }
+    async function createEvent() {
+        const event = {
+            'template_id': selectedTemplateId || params.id,
+            'name': name,
+            'description': description,
+            'start': {
+                'dateTime': start.toISOString(),
+                'timezone': Intl.DateTimeFormat().resolvedOptions().timeZone
+            },
+            'end': {
+                'dateTime': end.toISOString(),
+                'timezone': Intl.DateTimeFormat().resolvedOptions().timeZone
+            },
+            'date': dayMinus
+        }
+        try {
+            const { data, error } = await supabase
+                .from('events')
+                .insert(event)
+                .select()
+            setIsLoading(true)
+            console.log(error)
+            return data
+        }
 
+        catch (error) {
+            console.log(error)
+        }
 
-    const addEventMutation = useMutation({
-        mutationFn: async (event: any) => await supabase
-            .from('events')
-            .insert(event)
-            .select(),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['events'] }),
-                setShow(false)
+        finally {
+            setIsLoading(false)
+            setShow(false)
             setUserIsCreatingEvent(false)
             setCellIndex(null)
         }
-    })
-
-    const clearMutation = useMutation({
-        mutationFn: () => fetch(`/api/data?clear=1`),
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['events'] }),
-    })
+    };
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', padding: '1em' }}>
@@ -77,8 +80,8 @@ function CreateEvent(props: any) {
             <label>Description</label>
             <input type='text' value={description} onChange={(e) => { setDescription(e.target.value) }}></input>
             <button onClick={() => {
-                // createEvent()
-                addEventMutation.mutate(event)
+                createEvent()
+                // mutateEvents.mutate(event)
             }}>{isLoading ? 'Loading...' : 'Create event'}</button>
         </div>
     )

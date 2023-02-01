@@ -53,11 +53,11 @@ async function fetchEvents(id: any) {
 
 export function useEvents(templateId: any) {
     return useQuery(
-        ['events'],
+        ['events', templateId],
         () => fetchEvents(templateId),
         {
             enabled: !!templateId,
-            refetchInterval: 1000
+            // refetchOnMount: true
 
         }
     );
