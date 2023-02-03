@@ -13,6 +13,7 @@ export type TemplateProps = {
     template: {
         name: string,
         duration: string,
-        description: string
+        description: string,
+        type: 'event' | 'template'
     },
 }

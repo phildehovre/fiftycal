@@ -30,7 +30,7 @@ function TemplateContextProvider(props: any) {
         data: events,
         isLoading: isEventsLoading,
         error: eventsError
-    } = useEvents(selectedTemplateId)
+    } = useEvents(selectedTemplateId!)
 
     const values = {
         selectedTemplateId,

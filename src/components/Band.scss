@@ -34,8 +34,10 @@
     position: absolute;
     padding: 1em;
     background-color: hsla(0, 0%, 0%, 0.925);
-    top: 130%;
-    left: 0;
+    top: 100%;
+    left: -20px;
+    transition: 250ms all ease-in-out;
+    color: white;
 
     &::after {
         content: '';
@@ -44,11 +46,11 @@
         // background-color: red;
         position: absolute;
         top: -16px;
-        left: 7px;
-        border-bottom: 2em solid hsla(0, 0%, 0%, 0.925);
+        left: 27px;
+        border-bottom: 1em solid hsla(0, 0%, 0%, 0.925);
         border-top: 0em solid transparent;
         border-right: 0em solid transparent;
-        border-left: 2em solid transparent;
+        border-left: 1em solid transparent;
         transform: rotate(-135deg)
     }
 

@@ -1,17 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TemplateProps } from '../types/template'
 import './Band.scss'
 import Cell from './Cell'
+import { supabase } from '../App'
 
 
 function CampaignVisualiser(props: TemplateProps) {
 
     const [userIsCreatingEvent, setUserIsCreatingEvent] = useState<boolean>(false)
+    const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
 
-    const { duration } = props.template
+    const { duration, type } = props.template
     const durationNum = Number(duration.split(' ')[0])
 
     const band = [...Array(durationNum)]
+
 
     const renderBand = () => {
         return band.map((c, i) => {

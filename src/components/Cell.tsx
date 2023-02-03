@@ -1,42 +1,70 @@
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import { TemplateContext } from '../contexts/TemplateContext';
-import { useEvents } from '../util/db';
+import { useQueryClient, useMutation } from '@tanstack/react-query'
+import { supabase } from '../App';
 import CreateEvent from './CreateEvent';
 import Dropdown from './Dropdown';
+import { useEvents } from '../util/db';
+import { faGalacticSenate } from '@fortawesome/free-brands-svg-icons';
 
 function Cell(props: any) {
 
     const [show, setShow] = useState<boolean>(false)
     const [cellIndex, setCellIndex] = useState(null)
     const [hasEvent, setHasEvent] = useState<boolean>(false)
-    const [displayEvent, setDisplayEvent] = useState<boolean>(false)
     const [showEventDetails, setShowEventDetails] = useState<boolean>(false)
+    const [event, setEvent] = useState()
 
-    const { dayMinus, index, userIsCreatingEvent, setUserIsCreatingEvent } = props
-    const { selectedTemplateId, events, isEventsLoading } = useContext(TemplateContext)
+    const {
+        dayMinus,
+        index,
+        userIsCreatingEvent,
+        setUserIsCreatingEvent,
+    } = props
+    const { selectedTemplateId, isEventsLoading, events } = useContext(TemplateContext)
 
     // const { data: events, isLoading, error } = useEvents(selectedTemplateId)
 
+    const queryClient = useQueryClient()
+    const dropdownRef = useRef()
+
+    useEffect(() => {
+        //@ts-ignore
+        let event = events?.data.find((v: any) => {
+            return v.date === dayMinus
+        });
+        setEvent(event)
+    });
 
     useEffect(() => {
         if (events) {
-            //@ts-ignore
+            // @ts-ignore
             const eventsArray = events.data.map((v: any) => {
                 return v.date
             });
-            // console.log(eventsArray)
             if (eventsArray.includes(dayMinus)) {
                 setHasEvent(true)
             }
         };
+
+    }, [events]);
+
+    const deleteEventMutation = useMutation({
+        mutationFn: async (id: string) => await supabase
+            .from('events')
+            .delete()
+            .eq('id', id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['events'] }),
+                setShowEventDetails(false)
+        }
     });
 
-
-
     const renderEventCreation = () => {
-        if (userIsCreatingEvent) {
+
+        if (userIsCreatingEvent && !hasEvent) {
             return (<>
                 <CreateEvent
                     setShow={setShow}
@@ -52,21 +80,31 @@ function Cell(props: any) {
             </>
             )
         }
-        return (
-            <div className='menu' onClick={() => setUserIsCreatingEvent(true)}>Create event</div>
-        )
-    }
+        if (!hasEvent) {
+            return (
+                <div className='menu' onClick={() => {
+                    setUserIsCreatingEvent(true)
+                }}
+                >Create event
+                </div>
+            )
+        }
+
+    };
+
 
     const renderEventDetails = () => {
         if (events !== undefined && !isEventsLoading) {
             // const { name, description } = events[dayMinus]
             return (
-                <>
+                <><div>{event?.name}</div>
+                    <p>{event?.description}</p>
                     <button onClick={() => {
                         setUserIsCreatingEvent(false)
-                        setShow(false)
                         setCellIndex(null)
-                    }}>Delete event</button>
+                        //@ts-ignore
+                        deleteEventMutation.mutate(event?.id)
+                    }}>{deleteEventMutation.isLoading ? 'Loading' : 'Delete event'}</button>
                     <button onClick={() => {
                         setUserIsCreatingEvent(false)
                         setShow(false)
@@ -79,17 +117,24 @@ function Cell(props: any) {
 
 
     const handleCellDropdownDisplay = () => {
-        if (userIsCreatingEvent) {
+        if (userIsCreatingEvent || hasEvent) {
             return
         }
         setShow(true)
         setCellIndex(index)
     }
 
-    const handleEventHover = () => {
-        if (hasEvent) {
-            setShowEventDetails(true)
+    const handleMouseHover = (val: string) => {
+        if (val === 'out') {
+            // var timer = setTimeout(() => 
+            setShowEventDetails(false)
+            // , 1000)
         }
+        if (hasEvent && val === 'in') {
+            setShowEventDetails(true)
+            // return () => clearTimeout(timer)
+        }
+
     };
 
 
@@ -101,10 +146,9 @@ function Cell(props: any) {
                     : <div
                         className={`cell ${cellIndex === index ? 'selected' : ''} ${hasEvent ? 'has-event' : ''}`}
                         onClick={() => handleCellDropdownDisplay()}
-                        onMouseEnter={() => { handleEventHover() }}
-                        onMouseLeave={() => { setTimeout(() => setShowEventDetails(false), 1000) }}
+                        onMouseEnter={() => { handleMouseHover('in') }}
+                        onMouseLeave={() => { handleMouseHover('out') }}
                     >{dayMinus}
-
                         <Dropdown show={show}>
                             {renderEventCreation()}
                         </Dropdown>

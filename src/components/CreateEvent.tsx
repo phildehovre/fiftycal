@@ -11,8 +11,6 @@ import { useQueryClient, useMutation } from '@tanstack/react-query'
 function CreateEvent(props: any) {
 
     const queryClient = useQueryClient()
-
-
     const { setShow, setUserIsCreatingEvent, setCellIndex, dayMinus } = props
 
     const [start, setStart] = useState(new Date())
@@ -40,7 +38,8 @@ function CreateEvent(props: any) {
             'dateTime': end.toISOString(),
             'timezone': Intl.DateTimeFormat().resolvedOptions().timeZone
         },
-        'date': dayMinus
+        'date': dayMinus,
+        'user_id': session?.user.id
     }
 
 
@@ -57,10 +56,6 @@ function CreateEvent(props: any) {
         }
     })
 
-    const clearMutation = useMutation({
-        mutationFn: () => fetch(`/api/data?clear=1`),
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['events'] }),
-    })
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', padding: '1em' }}>

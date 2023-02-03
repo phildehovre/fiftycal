@@ -3,8 +3,9 @@ import { supabase } from '../App';
 import { TemplateType } from '../types/template';
 
 
+// TEMPLATE Via ID ====================================
 
-const fetchTemplate = async (id: string) => {
+const fetchTemplate = async (id: any) => {
     try {
         const res = await supabase
             .from('templates')
@@ -22,15 +23,14 @@ const fetchTemplate = async (id: string) => {
     }
 };
 
-export function useTemplate(id: string) {
+export function useTemplate(id: string | undefined) {
     return useQuery(
-        ['template', { id }], () => fetchTemplate(id),
-        {
-            enabled: !!id
-        }
+        ['template', { id }], () => fetchTemplate(id)
     )
 };
 
+
+// TEMPLATES ====================================
 
 async function fetchTemplates() {
     let res = await supabase
@@ -46,33 +46,7 @@ export function useTemplates() {
     )
 };
 
-async function fetchEvents(id: any) {
-    let res = await supabase
-        .from('events')
-        .select('*')
-        .eq('template_id', id)
-    return res
-};
-
-export function useEvents(templateId: any) {
-    return useQuery(
-        ['events'],
-        () => fetchEvents(templateId),
-        {
-            enabled: !!templateId
-        }
-    )
-};
-
-async function createEvent(event: any) {
-    const res = await supabase
-        .from('events')
-        .insert(event)
-        .select()
-    return res
-}
-
-
+// CAMPAIGNS ====================================
 
 async function fetchCampaigns() {
     let res = await supabase
@@ -87,3 +61,14 @@ export function useCampaigns() {
         () => fetchCampaigns(),
     );
 };
+
+
+// JUNKYARD =====================================
+
+export async function createEvent(event: any) {
+    const res = await supabase
+        .from('events')
+        .insert(event)
+        .select()
+    return res
+}

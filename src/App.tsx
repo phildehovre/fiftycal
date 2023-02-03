@@ -2,7 +2,6 @@ import { useState } from 'react'
 import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Homepage from '../src/pages/Homepage'
-import CalendarPage from './pages/CalendarPage'
 import UserContextProvider from './contexts/UserContext'
 import Nav from './components/Nav'
 import PostEvents from './components/CreateEventForm'
@@ -12,6 +11,7 @@ import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { createClient } from '@supabase/supabase-js'
 import TemplatePage from './pages/TemplatePage'
 import DashboardPage from './pages/DashboardPage'
+import CreateCampaignPage from './pages/CreateCampaignPage'
 
 export const supabase = createClient("https://jczttxmgknqmhdwgpmvl.supabase.co", import.meta.env.VITE_REACT_APP_SUPABASE_API_KEY)
 function App() {
@@ -27,8 +27,8 @@ function App() {
             <Routes>
               <Route element={<Homepage />} path='/' />
               <Route element={<DashboardPage />} path='/dashboard' />
-              <Route element={<CalendarPage />} path='/calendar' />
               <Route element={<CreateTemplatePage />} path='/new-template' />
+              <Route element={<CreateCampaignPage />} path='/new-campaign' />
               <Route element={<TemplatePage />} path='/template/:id' />
             </Routes>
           </TemplateContextProvider>

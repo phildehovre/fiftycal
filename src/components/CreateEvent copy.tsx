@@ -5,13 +5,11 @@ import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { supabase } from '../App'
 import { TemplateContext } from '../contexts/TemplateContext'
 import { useParams } from 'react-router-dom'
-import { createEvent } from '../util/db'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 
 function CreateEvent(props: any) {
 
     const queryClient = useQueryClient()
-
 
     const { setShow, setUserIsCreatingEvent, setCellIndex, dayMinus } = props
 

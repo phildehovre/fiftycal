@@ -84,10 +84,6 @@ function CreateTemplate() {
                     <input type='text' value={name} onChange={(e) => { setName(e.target.value) }}></input>
                     <label>Description</label>
                     <input type='text' value={description} onChange={(e) => { setDescription(e.target.value) }}></input>
-                    {/* IMPLEMENT CUSTOM SELECTS LATER */}
-
-                    {/* <Select unit={'number'} /> */}
-                    {/* <Select unit={'days'} /> */}
                     <div>
                         <input type='number' min='1' placeholder='30' onChange={(e: any) => setDuration(e.target.value)}></input>
                         <select onChange={(e: any) => { setUnit(e.target.value) }}>

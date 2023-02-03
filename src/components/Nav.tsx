@@ -5,7 +5,6 @@ import { useSession, useSessionContext } from '@supabase/auth-helpers-react'
 import { Link } from 'react-router-dom'
 import './Nav.scss'
 import { TemplateContext } from '../contexts/TemplateContext';
-import DashboardPage from '../pages/DashboardPage';
 
 
 
@@ -22,7 +21,10 @@ function Nav() {
             <div className='btn-ctn'>
                 <Link to='/' onClick={() => setSelectedTemplateId('')}>Home</Link>
                 <Link to='/new-template'>Template</Link>
-                {session && <Link to='/dashboard'>Dashboard</Link>}
+                {session && <>
+                    <Link to='/dashboard'>Dashboard</Link>
+                </>
+                }
 
                 {
                     session
