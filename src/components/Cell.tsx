@@ -13,43 +13,22 @@ function Cell(props: any) {
 
     const [show, setShow] = useState<boolean>(false)
     const [cellIndex, setCellIndex] = useState(null)
-    const [hasEvent, setHasEvent] = useState<boolean>(false)
     const [showEventDetails, setShowEventDetails] = useState<boolean>(false)
-    const [event, setEvent] = useState()
 
     const {
         dayMinus,
         index,
         userIsCreatingEvent,
         setUserIsCreatingEvent,
+        hasEvent, event,
+        isEventsLoading
     } = props
-    const { selectedTemplateId, isEventsLoading, events } = useContext(TemplateContext)
 
     // const { data: events, isLoading, error } = useEvents(selectedTemplateId)
 
     const queryClient = useQueryClient()
     const dropdownRef = useRef()
 
-    useEffect(() => {
-        //@ts-ignore
-        let event = events?.data.find((v: any) => {
-            return v.date === dayMinus
-        });
-        setEvent(event)
-    });
-
-    useEffect(() => {
-        if (events) {
-            // @ts-ignore
-            const eventsArray = events.data.map((v: any) => {
-                return v.date
-            });
-            if (eventsArray.includes(dayMinus)) {
-                setHasEvent(true)
-            }
-        };
-
-    }, [events]);
 
     const deleteEventMutation = useMutation({
         mutationFn: async (id: string) => await supabase
@@ -94,11 +73,11 @@ function Cell(props: any) {
 
 
     const renderEventDetails = () => {
-        if (events !== undefined && !isEventsLoading) {
-            // const { name, description } = events[dayMinus]
+        if (event !== undefined && !isEventsLoading) {
             return (
                 <><div>{event?.name}</div>
                     <p>{event?.description}</p>
+                    <CreateEvent />
                     <button onClick={() => {
                         setUserIsCreatingEvent(false)
                         setCellIndex(null)
