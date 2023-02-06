@@ -12,7 +12,6 @@ import { createClient } from '@supabase/supabase-js'
 import TemplatePage from './pages/TemplatePage'
 import DashboardPage from './pages/DashboardPage'
 import CreateCampaignPage from './pages/CreateCampaignPage'
-import CampaignContextProvider from './contexts/CampaignContext'
 
 export const supabase = createClient("https://jczttxmgknqmhdwgpmvl.supabase.co", import.meta.env.VITE_REACT_APP_SUPABASE_API_KEY)
 function App() {
@@ -24,16 +23,14 @@ function App() {
       <Router>
         <UserContextProvider>
           <TemplateContextProvider>
-            <CampaignContextProvider>
-              <Nav />
-              <Routes>
-                <Route element={<Homepage />} path='/' />
-                <Route element={<DashboardPage />} path='/dashboard' />
-                <Route element={<CreateTemplatePage />} path='/new-template' />
-                <Route element={<CreateCampaignPage />} path='/new-campaign' />
-                <Route element={<TemplatePage />} path='/template/:id' />
-              </Routes>
-            </CampaignContextProvider>
+            <Nav />
+            <Routes>
+              <Route element={<Homepage />} path='/' />
+              <Route element={<DashboardPage />} path='/dashboard' />
+              <Route element={<CreateTemplatePage />} path='/new-template' />
+              <Route element={<CreateCampaignPage />} path='/new-campaign' />
+              <Route element={<TemplatePage />} path='/template/:id' />
+            </Routes>
           </TemplateContextProvider>
         </UserContextProvider>
       </Router>

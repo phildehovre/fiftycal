@@ -7,7 +7,7 @@ export const CampaignContext = React.createContext({
     setCampaignId: (id: string) => { }
 });
 
-function CampaignContextProvider(props: { children: any }) {
+function CampaignContextProvider(props: any) {
 
     const [campaignId, setCampaignId] = useState('ID')
 
@@ -16,9 +16,9 @@ function CampaignContextProvider(props: { children: any }) {
     }
 
     return (
-        <CampaignContextProvider value={values}>
-            {Children}
-        </CampaignContextProvider>
+        <CampaignContext.Provider value={values}>
+            {props.children}
+        </CampaignContext.Provider>
     )
 };
 

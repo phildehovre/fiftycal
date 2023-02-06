@@ -24,7 +24,6 @@ function SupabaseLogin() {
         }
         catch (error) {
             alert('Error logging in to Google with Supabase')
-            console.log(error)
         }
 
         finally {

@@ -56,7 +56,7 @@ async function fetchEvents(id: any) {
 
 export function useEvents(templateId: any) {
     return useQuery(
-        ['events', templateId],
+        ['events'],
         () => fetchEvents(templateId),
         {
             enabled: !!templateId
