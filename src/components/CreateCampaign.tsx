@@ -5,9 +5,9 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { TemplateContext } from '../contexts/TemplateContext'
-import { useTemplates } from '../util/db copy'
-import './CreateCampaign.scss'
-import 'react-calendar/dist/Calendar.css'
+import CampaignVisualiser from './CampaignVisualiser'
+import { CampaignContext } from '../contexts/CampaignContext'
+// import './CreateCampaign.scss'
 
 const schema = yup.object().shape({
     name: yup.string().required('A name for the event is required'),
@@ -30,6 +30,7 @@ function CreateCampaign(props: {
 
     const session = useSession()
     const { selectedTemplateId, setSelectedTemplateId } = useContext(TemplateContext)
+    const { campaignId, setCampaignId } = useContext(CampaignContext)
     const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(schema) })
 
     const onSubmit = (data: any) => {
@@ -59,6 +60,7 @@ function CreateCampaign(props: {
         })
     };
 
+    console.log(campaignId)
 
     return (
 
@@ -101,6 +103,10 @@ function CreateCampaign(props: {
                         type='submit'
                     >Create </button>
                 </form>
+            }
+            {
+                template && campaignId &&
+                < CampaignVisualiser template={template} />
             }
         </div>
     )

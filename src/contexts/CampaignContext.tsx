@@ -1,11 +1,15 @@
 import React, { Children, useState } from 'react'
+import { CampaignProps } from '../types/template';
 
-const CampaignContext = React.createContext({
-})
+
+export const CampaignContext = React.createContext({
+    campaignId: '',
+    setCampaignId: (id: string) => { }
+});
 
 function CampaignContextProvider(props: { children: any }) {
 
-    const [campaignId, setCampaignId] = useState('')
+    const [campaignId, setCampaignId] = useState('ID')
 
     const values = {
         campaignId, setCampaignId
@@ -16,6 +20,6 @@ function CampaignContextProvider(props: { children: any }) {
             {Children}
         </CampaignContextProvider>
     )
-}
+};
 
 export default CampaignContextProvider
